@@ -190,6 +190,6 @@ exports.jobs= async(req,res,next)=>{
 }
 
 exports.logout=(req,res,next)=>{
-  req.session = null
+  req.session = null;
   res.redirect('/login')
 }
