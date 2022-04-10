@@ -4,6 +4,7 @@ const User = require('../models/writter');
 const { sendMail } = require('../utils/sendemail.js');
 const Password = require('../utils/password');
 const Job = require('../models/jobs');
+const { clearCache } = require('ejs');
 
 // @desc          register user
 // @route         Get /api/v1/auth/register
@@ -53,7 +54,7 @@ exports.registeruser = async(req,res,next)=>{
 exports.loginuser = async(req,res,next)=>{
   if(req.session.user){
     console.log(req.session.user);
-    res.redirect('/')
+    return res.redirect('/')
   }
   if(req.method == 'POST'){
     const{email, password} = req.body;
@@ -70,18 +71,26 @@ exports.loginuser = async(req,res,next)=>{
       req.session.user = existinguser;
       req.session.is_loggedin=true;
       return res.redirect('/')
+  }else{
+    console.log(req.flash());
+    res.render('login',)
   }
-  console.log(req.flash());
-  res.render('login',)
+  
 };
 
+
 exports.logout=(req,res,next)=>{
+  console.log('hey');
   req.session.destroy(function(err) {
-    // cannot access session here
-    console.log(error);
-    res.redirect('/login');
-  })
-    
+    if(err) {
+        return next(err);
+    } else {
+        req.session = null;
+        console.log(req.session);
+        console.log("logout successful");
+        return res.redirect('/');
+    }
+});
 };
 
 // exports.forgotpass = async (req,res,next)=>{
@@ -192,7 +201,3 @@ exports.jobs= async(req,res,next)=>{
   
 }
 
-exports.logout=(req,res,next)=>{
-  req.session = null;
-  res.redirect('/login')
-}

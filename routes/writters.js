@@ -7,8 +7,8 @@ router.get('/login',controllers.loginuser);
 router.get('/register',controllers.registeruser);
 router.get('/',RequireAuth,controllers.dashboard);
 router.get('/jobs',RequireAuth,controllers.jobs);
-router.get('/logout',RequireAuth,controllers.logout);
 router.post('/login',controllers.loginuser);
 router.post('/register',controllers.registeruser);
 router.post('/jobs',RequireAuth,controllers.jobs);
+router.get('/logout',controllers.logout)
 module.exports=router;
