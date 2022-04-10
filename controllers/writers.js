@@ -76,9 +76,12 @@ exports.loginuser = async(req,res,next)=>{
 };
 
 exports.logout=(req,res,next)=>{
-    req.session = null;
-  
+  req.session.destroy(function(err) {
+    // cannot access session here
+    console.log(error);
     res.redirect('/login');
+  })
+    
 };
 
 // exports.forgotpass = async (req,res,next)=>{
