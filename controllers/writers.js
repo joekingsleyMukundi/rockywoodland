@@ -24,7 +24,7 @@ exports.registeruser = async(req,res,next)=>{
     .then(userDocs=>{
       if(userDocs){
         req.flash('error', 'User already exists');
-        return res.redirect('/login');
+        return res.redirect('/register');
       }
       const user = new User({username:username,email:email,password:password,phone:phone,});
       return user.save()
@@ -39,7 +39,7 @@ exports.registeruser = async(req,res,next)=>{
       return res.redirect('/register');
     });
   }else{
-    res.render('signup')
+    res.render('signup',{message:req.flash('error')})
   }
 };
 
@@ -72,8 +72,7 @@ exports.loginuser = async(req,res,next)=>{
       req.session.is_loggedin=true;
       return res.redirect('/')
   }else{
-    console.log(req.flash());
-    res.render('login',)
+    res.render('login', {successmessage:req.flash('success'),errormessage:req.flash('error')})
   }
   
 };
@@ -169,7 +168,9 @@ exports.dashboard=async (req,res,next)=>{
     user:user,
     totaljobs:jobsno,
     pendingjobs:pendingjobs.length,
-    jobs:totalJobs
+    jobs:totalJobs,
+    errormessage:req.flash('error'),
+    successmessage:req.flash('success')
   }
   res.render('dashboard',context)
 }

@@ -124,36 +124,57 @@
                                     type="button" data-toggle="sidebar">
                                     <span class="material-icons icon-14pt">menu</span>
                                 </button>
-
-                                <div class="dropdown">
-                                    <a href="#" data-toggle="dropdown" data-caret="false"
-                                        class="dropdown-toggle navbar-toggler navbar-toggler-dashboard border-left d-flex align-items-center ml-navbar">
-                                        <span class="material-icons">laptop</span> My Dashboard
-                                    </a>
-                                    <div id="company_menu"
-                                        class="dropdown-menu dropdown-menu-right navbar-company-menu">
-                                        <div
-                                            class="dropdown-item d-flex align-items-center py-2 navbar-company-info py-3">
-
-                                            <span class="mr-3">
-                                                <img src="assets/images/frontted-logo-blue.svg" width="43" height="43"
-                                                    alt="avatar">
-                                            </span>
-                                            <span class="flex d-flex flex-column">
-                                                <strong class="h5 m-0">
-                                                    <%= user.username%>.
-                                                </strong>
-                                                <small class="text-muted text-uppercase">Writer</small>
-                                            </span>
-
-                                        </div>
-                                        <div class="dropdown-divider"></div>
-
-                                        <a class="dropdown-item d-flex align-items-center py-2" href="/logout">
-                                            <span class="material-icons mr-2">exit_to_app</span> Logout
-                                        </a>
+                                <% if(errormessage.length> 0){%>
+                                    <div class="alert alert-dismissible bg-danger text-white border-0 fade show"
+                                        role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <strong>Error - </strong>
+                                        <%= errormessage[0] %>!
                                     </div>
-                                </div>
+                                    <%}%>
+                                        <% if(successmessage.length> 0 ){%>
+                                            <div class="alert alert-dismissible bg-info text-white border-0 fade show"
+                                                role="alert">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                                <strong>success - </strong>
+                                                <%= successmessage[0] %>!
+                                            </div>
+                                            <%}%>
+                                                <div class="dropdown">
+                                                    <a href="#" data-toggle="dropdown" data-caret="false"
+                                                        class="dropdown-toggle navbar-toggler navbar-toggler-dashboard border-left d-flex align-items-center ml-navbar">
+                                                        <span class="material-icons">laptop</span> My Dashboard
+                                                    </a>
+                                                    <div id="company_menu"
+                                                        class="dropdown-menu dropdown-menu-right navbar-company-menu">
+                                                        <div
+                                                            class="dropdown-item d-flex align-items-center py-2 navbar-company-info py-3">
+
+                                                            <span class="mr-3">
+                                                                <img src="assets/images/frontted-logo-blue.svg"
+                                                                    width="43" height="43" alt="avatar">
+                                                            </span>
+                                                            <span class="flex d-flex flex-column">
+                                                                <strong class="h5 m-0">
+                                                                    <%= user.username%>.
+                                                                </strong>
+                                                                <small class="text-muted text-uppercase">Writer</small>
+                                                            </span>
+
+                                                        </div>
+                                                        <div class="dropdown-divider"></div>
+
+                                                        <a class="dropdown-item d-flex align-items-center py-2"
+                                                            href="/logout">
+                                                            <span class="material-icons mr-2">exit_to_app</span> Logout
+                                                        </a>
+                                                    </div>
+                                                </div>
 
                             </div>
                         </div>
