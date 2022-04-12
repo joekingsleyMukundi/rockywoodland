@@ -52,14 +52,17 @@ exports.activateAccount=async(req,res,next)=>{
   await writer.save();
   res.redirect('/writers');
 };
-exports.approveJob=async(req,res,next)=>{
+exports.pay=async(req,res,next)=>{
   const id = req.params.id;
   const job = await Job.findById(id);
   job.verified = true;
   job.status = "paid";
-  job.save()
-  const user = User.findOne({email:job.writeremail})
+  job.save();
+  User.findOne({email:job.writeremail})
   .then(user=>{
+    const prev = user.pendingRevenue;
+    const newprev = prev-job.amount;
+    user.pendingRevenue = newprev;
     const rev = user.totalRevenue;
     const newrev = rev+job.amount;
     user.totalRevenue = newrev;
@@ -73,13 +76,34 @@ exports.approveJob=async(req,res,next)=>{
     return res.redirect('/admindashboard')
   })
 };
+exports.approveJob=async(req,res,next)=>{
+  const id = req.params.id;
+  const job = await Job.findById(id);
+  job.verified = true;
+  job.status = "pending payment";
+  job.save();
+  User.findOne({email:job.writeremail})
+  .then(user=>{
+    const prev = user.pendingRevenue;
+    const newprev = prev+job.amount;
+    user.pendingRevenue = newprev;
+    user.save();
+    req.flash('success', 'Successfully approved and confirmed payment for the job');
+    return res.redirect('/admindashboard');
+  })
+  .catch(error=>{
+    console.log(error);
+    req.flash('error', 'an erroroccored')
+    return res.redirect('/admindashboard')
+  })
+};
 exports.declineJob=async(req,res,next)=>{
-  const id = req.params.uid;
+  const id = req.params.id;
   const job = await Job.findById(id);
   job.status = 'rejected';
-  await user.save();
-  req.flash('success', 'Successfully rejected the job')
-  res.redirect('/admindashboards');
+  await job.save();
+  req.flash('success', 'Successfully rejected the job');
+  res.redirect('/admindashboard');
 };
 exports.deleteUser = async (req,res,next)=>{
   const id = req.params.id;

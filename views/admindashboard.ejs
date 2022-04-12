@@ -328,15 +328,19 @@
                                                         <td>
                                                             <%= job.createdAt %>
                                                         </td>
-                                                        <% if (job.status !='paid' ) { %>
+                                                        <% if (job.status !='paid' && job.status !="pending payment" &&
+                                                            job.status !='rejected' ) { %>
                                                             <td><a href="/approvejob/<%= job._id %> "
-                                                                    class="btn btn-outline-success">approve&markpaid</a>
+                                                                    class="btn btn-outline-success">approve</a>
                                                             </td>
                                                             <td><a href="/declinejob/<%= job._id %> "
                                                                     class="btn btn-outline-danger">Reject</a></td>
-                                                            <% }else{%>
-                                                                <td><a class="btn btn-info">Confirmed</a></td>
-                                                                <%} %>
+                                                            <% }else if (job.status=="pending payment" ){%>
+                                                                <td><a href="/payjob/<%= job._id %> "
+                                                                        class="btn btn-success">pay</a></td>
+                                                                <%} else{%>
+                                                                    <td><a class="btn btn-info">Completed</a></td>
+                                                                    <%}%>
 
 
                                                     </tr>
