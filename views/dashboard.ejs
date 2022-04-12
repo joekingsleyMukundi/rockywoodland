@@ -340,11 +340,13 @@
 
 
                                                                 <td><span class="badge 
-                                                                <% if(job.status == 'pending'){ %>
-                                                                badge-warning
-                                                                <% }else{ %>
-                                                                badge-success
-                                                                <%}%>
+                                                                    <% if(job.status == 'pending'){ %>
+                                                                        badge-warning
+                                                                        <% }else if(job.status == 'rejected'){ %>
+                                                                        badge-danger
+                                                                        <%}else{%>
+                                                                            badge-success
+                                                                            <%}%>
                                                                 ">
                                                                         <%= job.status%>
                                                                     </span></td>
