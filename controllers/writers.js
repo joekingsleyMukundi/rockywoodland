@@ -159,6 +159,7 @@ exports.dashboard=async (req,res,next)=>{
   if(user.role=="admin"){
     return res.redirect('/admindashboard');
   }
+  const currentuser = await User.findOne({email:user.email})
   var jobsno;
   var pendingjobs;
   const totalJobs = await Job.find({writerid:user._id});
@@ -169,10 +170,11 @@ exports.dashboard=async (req,res,next)=>{
     jobsno= totalJobs.length;
     pendingjobs = await Job.find({writerid:user._id,status:'pending'});
     approvedJobs = await Job.find({writerid:user._id,status:'paid'});
-    rejectedjobs = await Job.find({writerid:user._id,status:'rejected'})
+    rejectedjobs = await Job.find({writerid:user._id,status:'rejected'});
   }
+  console.log(user);
   context={
-    user:user,
+    user:currentuser,
     totaljobs:jobsno,
     pendingjobs:pendingjobs.length,
     jobs:totalJobs,
