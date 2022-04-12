@@ -20,16 +20,22 @@ exports.registeruser = async(req,res,next)=>{
       req.flash('error', 'Password should match');
       return res.redirect('/register');
     }
+    const user = await User.findOne({phone:phone});
+    console.log(user);
+    if(user){
+      req.flash('error', 'Phone already exists');
+      return res.redirect('/register');
+    }
     User.findOne({email:email})
     .then(userDocs=>{
       if(userDocs){
-        req.flash('error', 'User already exists');
+        req.flash('error', 'Email already exists');
         return res.redirect('/register');
       }
       const user = new User({username:username,email:email,password:password,phone:phone,});
       return user.save()
       .then(newuser=>{
-        req.flash('success', 'Registration successful. Please login');
+        req.flash('success', 'Registration successful. wait for approval and  login');
         return res.redirect('/login');
       });
     })
@@ -42,14 +48,6 @@ exports.registeruser = async(req,res,next)=>{
     res.render('signup',{message:req.flash('error')})
   }
 };
-
-// exports.activateAccount=async(req,res,next)=>{
-//   const id = req.params.uid;
-//   const writer = await User.findById(id);
-//   user.isActive = true;
-//   await user.save();
-//   res.redirect('/userslist');
-// };
 
 exports.loginuser = async(req,res,next)=>{
   if(req.session.user){
@@ -66,6 +64,10 @@ exports.loginuser = async(req,res,next)=>{
     const matchpassword = await  Password.compare(existinguser.password, password);
     if(!matchpassword){
       req.flash('error', 'Wrong password');
+      return res.redirect('/login')
+    }
+    if(!existinguser.verified){
+      req.flash('error', 'User is not verified');
       return res.redirect('/login')
     }
       req.session.user = existinguser;
@@ -154,15 +156,18 @@ exports.logout=(req,res,next)=>{
 
 exports.dashboard=async (req,res,next)=>{
   const user=req.session.user;
+  if(user.role=="admin"){
+    return res.redirect('/admindashboard');
+  }
   var jobsno;
   var pendingjobs;
-  const totalJobs = await Job.find({writerid:user._id})
+  const totalJobs = await Job.find({writerid:user._id});
   if(!totalJobs){
     jobsno = 0;
     pendingjobs=0;
   }else{
     jobsno= totalJobs.length;
-    pendingjobs = await Job.find({writerid:user._id,status:'pending'})
+    pendingjobs = await Job.find({writerid:user._id,status:'pending'});
   }
   context={
     user:user,
@@ -184,8 +189,9 @@ exports.jobs= async(req,res,next)=>{
   }
   if(req.method == 'POST'){
     const title = req.body.title;
+    const platform = req.body.platform
     const amount =Number(req.body.amount);
-    const job = new Job({jobTitle:title,writerid:user._id,amount:amount})
+    const job = new Job({jobTitle:title,writerid:user._id,amount:amount,platform:platform,writerUsername:user.username,writeremail:user.email,writerphone:user.phone});
     job.save()
     .then(results=>{
       req.flash('success', 'Job upload successful. Please wait for validation');

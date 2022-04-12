@@ -15,6 +15,10 @@ const userSchema = new Schema({
     required: true,
     unique:true
   },
+  role:{
+    type:String,
+    default:"writer"
+  },
   phone:{
     type:String,
     required:true,

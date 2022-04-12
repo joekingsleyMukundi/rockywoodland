@@ -7,7 +7,23 @@ const jobSchema = new Schema({
     type: String,
     required: true,
   },
+  platform:{
+    type:String,
+    required: true
+  },
   writerid:{
+    type:String,
+    required:true
+  },
+  writerUsername:{
+    type:String,
+    required:true
+  },
+  writeremail:{
+    type:String,
+    required:true
+  },
+  writerphone:{
     type:String,
     required:true
   },

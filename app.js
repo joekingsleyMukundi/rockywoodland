@@ -7,7 +7,7 @@ const flash = require('connect-flash');
 const app = express();
 
 const writersUrls = require('./routes/writters');
-
+const adminurls = require('./routes/admin');
 //middelwares
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -23,6 +23,7 @@ app.use(flash());
 
 // routes
 app.use(writersUrls);
+app.use(adminurls);
 
 const port = process.env.PORT || 3000;
 

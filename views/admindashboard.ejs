@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 
 
-<!-- Mirrored from educate.frontted.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Apr 2022 18:41:52 GMT -->
+<!-- Mirrored from educate.frontted.com/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Apr 2022 18:42:16 GMT -->
 
 <head>
     <meta charset="utf-8">
@@ -124,6 +124,8 @@
                                     type="button" data-toggle="sidebar">
                                     <span class="material-icons icon-14pt">menu</span>
                                 </button>
+
+
                                 <% if(errormessage.length> 0){%>
                                     <div class="alert alert-dismissible bg-danger text-white border-0 fade show"
                                         role="alert">
@@ -145,6 +147,11 @@
                                                 <%= successmessage[0] %>!
                                             </div>
                                             <%}%>
+
+
+
+
+
                                                 <div class="dropdown">
                                                     <a href="#" data-toggle="dropdown" data-caret="false"
                                                         class="dropdown-toggle navbar-toggler navbar-toggler-dashboard border-left d-flex align-items-center ml-navbar">
@@ -161,14 +168,18 @@
                                                             </span>
                                                             <span class="flex d-flex flex-column">
                                                                 <strong class="h5 m-0">
-                                                                    <%= user.username%>.
+                                                                    <%= user.username %>
                                                                 </strong>
-                                                                <small class="text-muted text-uppercase">Writer</small>
+                                                                <small class="text-muted text-uppercase">ADMIN</small>
                                                             </span>
 
                                                         </div>
                                                         <div class="dropdown-divider"></div>
-
+                                                        <a class="dropdown-item d-flex align-items-center py-2"
+                                                            href="/writers">
+                                                            <span class="material-icons mr-2">exit_to_app</span> Logout
+                                                        </a>
+                                                        <div class="dropdown-divider"></div>
                                                         <a class="dropdown-item d-flex align-items-center py-2"
                                                             href="/logout">
                                                             <span class="material-icons mr-2">exit_to_app</span> Logout
@@ -189,184 +200,160 @@
                     style="padding-top: 60px;">
 
 
-
-
-
-                    <div class="page__heading">
-                        <div class="container-fluid page__container">
+                    <div class="page__heading border-bottom">
+                        <div class="container-fluid page__container d-flex align-items-center">
                             <h1 class="mb-0">Dashboard</h1>
                         </div>
                     </div>
+
                     <div class="container-fluid page__container">
-                        <div class="tab-content">
-                            <div class="tab-pane active show fade" id="activity_all">
-                                <!-- FIRST TAB CONTENT -->
+
+
+                        <div class="row">
+
+                            <div class="col-lg">
                                 <div class="row card-group-row">
-                                    <div class="col-lg-4 col-md-6 card-group-row__col">
-                                        <div class="card card-group-row__card">
-                                            <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
-                                                <div class="flex">
-                                                    <div class="card-header__title text-muted mb-2 d-flex"> Total
-                                                        Revenue
-                                                    </div>
-                                                    <span class="h4 m-0">KES;<%= user.totalRevenue %> </span>
-                                                </div>
-                                                <div><i
-                                                        class="material-icons icon-muted icon-40pt ml-3">monetization_on</i>
-                                                </div>
-                                            </div>
-                                            <div class="progress" style="height: 3px;">
-                                                <div class="progress-bar bg-warning" role="progressbar"
-                                                    style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
+                                    <div class="col-lg-6 card-group-row__col">
+                                        <div class="card card-group-row__card card-body card-body-x-lg"
+                                            style="position: relative; padding-bottom: calc(80px - 1.25rem); overflow: hidden; z-index: 0;">
+                                            <div class="card-header__title text-muted mb-2">All Writers</div>
+                                            <div class="text-amount">
+                                                <%= totalWriters %>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-6 card-group-row__col">
-                                        <div class="card card-group-row__card">
-                                            <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
-                                                <div class="flex">
-                                                    <div class="card-header__title text-muted d-flex mb-2">Pending Jobs
-                                                    </div>
-                                                    <span class="h4 m-0">
-                                                        <%=pendingjobs%>
-                                                    </span>
-                                                </div>
-                                                <div><i class="material-icons icon-muted icon-40pt ml-3">gps_fixed</i>
-                                                </div>
-                                            </div>
-                                            <div class="progress" style="height: 3px;">
-                                                <div class="progress-bar" role="progressbar" style="width: 50%;"
-                                                    aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="col-lg-6 card-group-row__col">
+                                        <div class="card card-group-row__card card-body card-body-x-lg"
+                                            style="position: relative; padding-bottom: calc(80px - 1.25rem); overflow: hidden; z-index: 0;">
+                                            <div class="card-header__title text-muted mb-2">Unverifiedwritters</div>
+                                            <div class="text-amount">
+                                                <%= unverified %>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-6 card-group-row__col">
-                                        <div class="card card-group-row__card">
-                                            <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
-                                                <div class="flex">
-                                                    <div class="card-header__title text-muted mb-2">Jobs</div>
+                                    <div class="col-lg-6 card-group-row__col">
+                                        <div class="card card-group-row__card card-body card-body-x-lg"
+                                            style="position: relative; padding-bottom: calc(80px - 1.25rem); overflow: hidden; z-index: 0;">
+                                            <div class="card-header__title text-muted mb-2">All Jobs</div>
+                                            <div class="text-amount">
+                                                <%= totaljobs %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 card-group-row__col">
+                                        <div class="card card-group-row__card card-body card-body-x-lg"
+                                            style="position: relative; padding-bottom: calc(80px - 1.25rem); overflow: hidden; z-index: 0;">
+                                            <div class="card-header__title text-muted mb-2">Pending Job</div>
+                                            <div class="text-amount">
+                                                <%= pendingjobs %>
+                                            </div>
 
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="h4 m-0">
-                                                            <%=totaljobs%>
-                                                        </div>
-                                                        <div class="progress ml-1" style="width:100%;height: 3px;">
-                                                            <div class="progress-bar bg-success" role="progressbar"
-                                                                style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
-                                                                aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div><i class="material-icons icon-muted icon-40pt ml-3">contacts</i>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="card">
-                                    <div class="card-header card-header-large bg-white">
-                                        <h4 class="card-header__title">All jobs</h4>
-                                    </div>
-                                    <div class="card-header">
-                                        <form class="form-inline" method="post" action="/jobs">
-                                            <label class="mr-sm-2" for="inlineFormFilterBy">Add question:</label>
-                                            <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0"
-                                                id="inlineFormFilterBy" name="title" placeholder="Type  question done">
-
-                                            <label class="mr-sm-2" for="inlineFormFilterBy">Platform:</label>
-                                            <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0"
-                                                id="inlineFormFilterBy" name="platform" placeholder="Cource hero">
-
-                                            <label class="mr-sm-2" for="inlineFormFilterBy">Add amount to be paid in
-                                                ksh:</label>
-                                            <input type="number" class="form-control mb-2 mr-sm-2 mb-sm-0"
-                                                id="inlineFormFilterBy" name="amount" placeholder="20">
-
-                                            <div class="form-group">
-                                                <button class="btn btn-block btn-primary" type="submit">add</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-
-                                    <div class="table-responsive border-bottom" data-toggle="lists"
-                                        data-lists-values='["js-lists-values-employee-name"]'>
-
-                                        <table class="table mb-0 thead-border-top-0">
-                                            <thead>
-                                                <tr>
-
-
-
-                                                    <th>Question</th>
-                                                    <th style="width: 150px;">Platform</th>
-                                                    <th style="width: 37px;">Status</th>
-                                                    <th style="width: 120px;">Date</th>
-                                                    <th style="width: 51px;">Earnings</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody class="list" id="staff">
-                                                <% if (totaljobs==0) { %>
-                                                    <p>No jobs done</p>
-                                                    <% }else{%>
-                                                        <% jobs.forEach (job=>{%>
-                                                            <tr class="selected">
-
-
-                                                                <td>
-
-                                                                    <div class="media align-items-center">
-                                                                        <div class="media-body">
-
-                                                                            <span class="js-lists-values-employee-name">
-                                                                                <%=job.jobTitle%>
-                                                                            </span>
-
-                                                                        </div>
-                                                                    </div>
-
-                                                                </td>
-
-                                                                <td>
-                                                                    <div class="media align-items-center">
-                                                                        <a href="#">
-                                                                            <%= job.platform%>
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-
-
-                                                                <td><span class="badge 
-                                                                <% if(job.status == 'pending'){ %>
-                                                                badge-warning
-                                                                <% }else{ %>
-                                                                badge-success
-                                                                <%}%>
-                                                                ">
-                                                                        <%= job.status%>
-                                                                    </span></td>
-                                                                <td><small class="text-muted">
-                                                                        <%= job.createdAt%>
-                                                                    </small></td>
-                                                                <td>
-                                                                    <%= job.amount %>
-                                                                </td>
-                                                            </tr>
-                                                            <%})%>
-                                                                <%}%>
-
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <!-- END FIRST TAB CONTENT -->
+                        <div class="card">
+                            <div class="card-header card-header-large bg-white">
+                                <h4 class="card-header__title"> All Jobs</h4>
                             </div>
 
+
+                            <div class="table-responsive border-bottom" data-toggle="lists"
+                                data-lists-values='["js-lists-values-employee-name"]'>
+
+                                <table class="table mb-0 thead-border-top-0">
+                                    <thead>
+                                        <tr>
+
+
+
+                                            <th>Question</th>
+                                            <th style="width: 150px;">platform</th>
+                                            <th style="width: 37px;">Status</th>
+                                            <th style="width: 120px;">writername</th>
+                                            <th style="width: 51px;">writerphone</th>
+                                            <th style="width: 24px;">date</th>
+                                            <th style="width: 24px;">Activity</th>
+                                            <th style="width: 24px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="list" id="staff">
+                                        <% if (totaljobs==0) { %>
+                                            <p>No jobs posted</p>
+                                            <% }else{%>
+                                                <% jobs.forEach(job=>{%>
+                                                    <tr class="selected">
+
+
+                                                        <td>
+
+                                                            <div class="media align-items-center">
+                                                                <div class="media-body">
+
+                                                                    <span class="js-lists-values-employee-name">
+                                                                        <%= job.jobTitle %>
+                                                                    </span>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="media align-items-center">
+                                                                <a href="#">CourceHero</a>
+                                                            </div>
+                                                        </td>
+
+                                                        <td><span class="badge 
+                                                            <% if(job.status == 'pending'){ %>
+                                                            badge-warning
+                                                            <% }else if(job.status == 'rejected'){ %>
+                                                            badge-danger
+                                                            <%}else{%>
+                                                                badge-success
+                                                                <%}%>
+                                                            ">
+
+                                                                <%= job.status%>
+                                                            </span></td>
+                                                        <td><small class="text-muted">
+                                                                <%= job.writerUsername %>
+                                                            </small></td>
+                                                        <td>
+                                                            <%= job.writerphone %>
+                                                        </td>
+                                                        <td>
+                                                            <%= job.createdAt %>
+                                                        </td>
+                                                        <% if (job.status !='paid' ) { %>
+                                                            <td><a href="/approvejob/<%= job._id %> "
+                                                                    class="btn btn-outline-success">approve&markpaid</a>
+                                                            </td>
+                                                            <td><a href="/deletejob/<%= job._id %> "
+                                                                    class="btn btn-outline-danger">Reject</a></td>
+                                                            <% }else{%>
+                                                                <td><a class="btn btn-info">Confirmed</a></td>
+                                                                <%} %>
+
+
+                                                    </tr>
+                                                    <%})%>
+                                                        <%} %>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
+
                         </div>
+
+
                     </div>
 
 
@@ -384,7 +371,7 @@
                 <div class="sidebar sidebar-dark sidebar-left bg-dark-gray" data-perfect-scrollbar>
 
                     <div class="d-flex align-items-center sidebar-p-a sidebar-account flex-shrink-0">
-                        <a href="index.html" class="flex d-flex align-items-center text-underline-0">
+                        <a href="/" class="flex d-flex align-items-center text-underline-0">
                             <span class="mr-3">
                                 <!-- LOGO -->
                                 PLATNUMENDWRITERS
@@ -395,7 +382,7 @@
 
 
                     <ul class="sidebar-menu">
-                        <li class="sidebar-menu-item active">
+                        <li class="sidebar-menu-item">
                             <a class="sidebar-menu-button" href="/">
 
                                 <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">photo_filter</i>
@@ -403,8 +390,15 @@
                             </a>
                         </li>
                     </ul>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="/writers">
 
-
+                                <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">photo_filter</i>
+                                <span class="sidebar-menu-text">Writers</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -589,10 +583,10 @@
     <!-- App Settings FAB -->
     <div id="app-settings">
         <app-settings layout-active="default" :layout-location="{
-      'default': 'index.html',
-      'fixed': 'fixed-index.html',
-      'fluid': 'fluid-index.html',
-      'mini': 'mini-index.html'
+      'default': 'admin-dashboard.html',
+      'fixed': 'fixed-admin-dashboard.html',
+      'fluid': 'fluid-admin-dashboard.html',
+      'mini': 'mini-admin-dashboard.html'
     }"></app-settings>
     </div>
 
@@ -634,25 +628,23 @@
     <!-- Global Settings -->
     <script src="assets/js/settings.js"></script>
 
-    <!-- Moment.js -->
-    <script src="assets/vendor/moment.min.js"></script>
-    <script src="assets/vendor/moment-range.js"></script>
-
-
     <!-- Chart.js -->
     <script src="assets/vendor/Chart.min.js"></script>
 
     <!-- App Charts JS -->
-    <script src="assets/js/chartjs-rounded-bar.js"></script>
     <script src="assets/js/charts.js"></script>
 
     <!-- Chart Samples -->
-    <script src="assets/js/page.analytics.js"></script>
+    <script src="assets/js/page.admin-dashboard.js"></script>
 
+    <!-- Vector Maps -->
+    <script src="assets/vendor/jqvmap/jquery.vmap.min.js"></script>
+    <script src="assets/vendor/jqvmap/maps/jquery.vmap.world.js"></script>
+    <script src="assets/js/vector-maps.js"></script>
 
 </body>
 
 
-<!-- Mirrored from educate.frontted.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Apr 2022 18:41:58 GMT -->
+<!-- Mirrored from educate.frontted.com/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Apr 2022 18:42:17 GMT -->
 
 </html>

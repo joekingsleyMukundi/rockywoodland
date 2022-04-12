@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+
+<!-- Mirrored from educate.frontted.com/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Apr 2022 18:42:16 GMT -->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Dashboard</title>
+
+  <!-- Prevent the demo from appearing in search engines -->
+  <meta name="robots" content="noindex">
+
+  <!-- Perfect Scrollbar -->
+  <link type="text/css" href="assets/vendor/perfect-scrollbar.css" rel="stylesheet">
+
+  <!-- App CSS -->
+  <link type="text/css" href="assets/css/app.css" rel="stylesheet">
+  <link type="text/css" href="assets/css/app.rtl.css" rel="stylesheet">
+
+  <!-- Material Design Icons -->
+  <link type="text/css" href="assets/css/vendor-material-icons.css" rel="stylesheet">
+  <link type="text/css" href="assets/css/vendor-material-icons.rtl.css" rel="stylesheet">
+
+  <!-- Font Awesome FREE Icons -->
+  <link type="text/css" href="assets/css/vendor-fontawesome-free.css" rel="stylesheet">
+  <link type="text/css" href="assets/css/vendor-fontawesome-free.rtl.css" rel="stylesheet">
+
+  <!-- ion Range Slider -->
+  <link type="text/css" href="assets/css/vendor-ion-rangeslider.css" rel="stylesheet">
+  <link type="text/css" href="assets/css/vendor-ion-rangeslider.rtl.css" rel="stylesheet">
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115115077-4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-115115077-4');
+  </script>
+
+
+
+  <!-- Facebook Pixel Code -->
+  <script>
+    ! function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ?
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = '2.0';
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '340571383230227');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=340571383230227&amp;ev=PageView&amp;noscript=1" /></noscript>
+  <!-- End Facebook Pixel Code -->
+
+
+
+
+  <!-- Flatpickr -->
+  <link type="text/css" href="assets/css/vendor-flatpickr.css" rel="stylesheet">
+  <link type="text/css" href="assets/css/vendor-flatpickr.rtl.css" rel="stylesheet">
+  <link type="text/css" href="assets/css/vendor-flatpickr-airbnb.css" rel="stylesheet">
+  <link type="text/css" href="assets/css/vendor-flatpickr-airbnb.rtl.css" rel="stylesheet">
+
+  <!-- Vector Maps -->
+  <link type="text/css" href="assets/vendor/jqvmap/jqvmap.min.css" rel="stylesheet">
+
+
+
+</head>
+
+<body class="layout-default">
+
+
+
+
+
+
+
+
+
+
+
+  <div class="mdk-drawer-layout js-mdk-drawer-layout" data-push data-responsive-width="992px" data-fullbleed>
+    <div class="mdk-drawer-layout__content">
+
+      <!-- Header Layout -->
+      <div class="mdk-header-layout js-mdk-header-layout" data-has-scrolling-region>
+
+        <!-- Header -->
+
+        <div id="header" class="mdk-header js-mdk-header m-0" data-fixed data-effects="waterfall"
+          data-retarget-mouse-scroll="false">
+          <div class="mdk-header__content">
+
+            <div class="navbar navbar-expand-sm navbar-main navbar-dark bg-primary pl-md-0 pr-0" id="navbar"
+              data-primary>
+              <div class="container-fluid page__container pr-0">
+
+                <!-- Navbar toggler -->
+                <button class="navbar-toggler navbar-toggler-custom  d-lg-none d-flex mr-navbar" type="button"
+                  data-toggle="sidebar">
+                  <span class="material-icons icon-14pt">menu</span>
+                </button>
+
+
+                <% if(errormessage.length> 0){%>
+                  <div class="alert alert-dismissible bg-danger text-white border-0 fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>Error - </strong>
+                    <%= errormessage[0] %>!
+                  </div>
+                  <%}%>
+                    <% if(successmessage.length> 0 ){%>
+                      <div class="alert alert-dismissible bg-info text-white border-0 fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">×</span>
+                        </button>
+                        <strong>success - </strong>
+                        <%= successmessage[0] %>!
+                      </div>
+                      <%}%>
+
+
+
+
+
+                        <div class="dropdown">
+                          <a href="#" data-toggle="dropdown" data-caret="false"
+                            class="dropdown-toggle navbar-toggler navbar-toggler-dashboard border-left d-flex align-items-center ml-navbar">
+                            <span class="material-icons">laptop</span> My Dashboard
+                          </a>
+                          <div id="company_menu" class="dropdown-menu dropdown-menu-right navbar-company-menu">
+                            <div class="dropdown-item d-flex align-items-center py-2 navbar-company-info py-3">
+
+                              <span class="mr-3">
+                                <img src="assets/images/frontted-logo-blue.svg" width="43" height="43" alt="avatar">
+                              </span>
+                              <span class="flex d-flex flex-column">
+                                <strong class="h5 m-0">
+                                  <%= user.username %>
+                                </strong>
+                                <small class="text-muted text-uppercase">ADMIN</small>
+                              </span>
+
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item d-flex align-items-center py-2" href="/logout">
+                              <span class="material-icons mr-2">exit_to_app</span> Logout
+                            </a>
+                          </div>
+                        </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- // END Header -->
+
+        <!-- Header Layout Content -->
+        <div
+          class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page"
+          style="padding-top: 60px;">
+
+
+          <div class="page__heading border-bottom">
+            <div class="container-fluid page__container d-flex align-items-center">
+              <h1 class="mb-0">Writers</h1>
+            </div>
+          </div>
+
+          <div class="container-fluid page__container">
+
+
+            <div class="row">
+
+              <div class="col-lg">
+                <div class="row card-group-row">
+                  <div class="col-lg-12 card-group-row__col">
+                    <div class="card card-group-row__card card-body card-body-x-lg"
+                      style="position: relative; padding-bottom: calc(80px - 1.25rem); overflow: hidden; z-index: 0;">
+                      <div class="card-header__title text-muted mb-2">All Writers</div>
+                      <div class="text-amount">
+                        <%= writters.length %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header card-header-large bg-white">
+                <h4 class="card-header__title"> All Jobs</h4>
+              </div>
+
+
+              <div class="table-responsive border-bottom" data-toggle="lists"
+                data-lists-values='["js-lists-values-employee-name"]'>
+
+                <table class="table mb-0 thead-border-top-0">
+                  <thead>
+                    <tr>
+
+
+
+                      <th>username</th>
+                      <th style="width: 150px;">email</th>
+                      <th style="width: 37px;">phone</th>
+
+                      <th style="width: 51px;">RegDate</th>
+                      <th style="width: 51px;">verified</th>
+                      <th style="width: 24px;">Activity</th>
+                      <th style="width: 24px;"></th>
+                    </tr>
+                  </thead>
+                  <tbody class="list" id="staff">
+                    <% if (writters.length==0) { %>
+                      <p>No users yet</p>
+                      <% }else{%>
+                        <% writters.forEach(writer=>{%>
+                          <tr class="selected">
+
+
+                            <td>
+
+                              <div class="media align-items-center">
+                                <div class="media-body">
+
+                                  <span class="js-lists-values-employee-name">
+                                    <%= writer.username %>
+                                  </span>
+
+                                </div>
+                              </div>
+
+                            </td>
+
+                            <td>
+                              <div class="media align-items-center">
+                                <a href="#">
+                                  <%= writer.email %>
+                                </a>
+                              </div>
+                            </td>
+                            <td><small class="text-muted">
+                                <%= writer.phone %>
+                              </small></td>
+
+                            <td>
+                              <%= writer.createdAt %>
+                            </td>
+                            <td><span class="badge 
+                                                            <% if(!writer.verified){ %>
+                                                            badge-warning
+                                                            <% }else{ %>
+                                                            badge-success
+                                                            <%}%>
+                                                            ">
+                                <%= writer.verified%>
+                              </span></td>
+                            <% if (!writer.verified) { %>
+                              <td><a href="/writer/<%= writer._id %> " class="btn btn-outline-success">approve</a>
+                              </td>
+                              <% } %>
+
+                                <td><a href="/deleteuser/<%= writer._id %> " class="btn btn-outline-danger">Delet
+                                    user</a>
+                                </td>
+                          </tr>
+                          <%})%>
+                            <%} %>
+
+
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+        <!-- // END header-layout__content -->
+
+      </div>
+      <!-- // END header-layout -->
+
+    </div>
+    <!-- // END drawer-layout__content -->
+
+    <div class="mdk-drawer  js-mdk-drawer" id="default-drawer" data-align="start">
+      <div class="mdk-drawer__content">
+        <div class="sidebar sidebar-dark sidebar-left bg-dark-gray" data-perfect-scrollbar>
+
+          <div class="d-flex align-items-center sidebar-p-a sidebar-account flex-shrink-0">
+            <a href="index.html" class="flex d-flex align-items-center text-underline-0">
+              <span class="mr-3">
+                <!-- LOGO -->
+                PLATNUMENDWRITERS
+              </span>
+
+            </a>
+          </div>
+
+
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/">
+
+                <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">photo_filter</i>
+                <span class="sidebar-menu-text">Overview</span>
+              </a>
+            </li>
+          </ul>
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/writers">
+
+                <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">photo_filter</i>
+                <span class="sidebar-menu-text">Writers</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- // END drawer-layout -->
+
+  <div class="mdk-drawer js-mdk-drawer" id="events-drawer" data-align="end">
+    <div class="mdk-drawer__content">
+      <div class="sidebar sidebar-light sidebar-left" data-perfect-scrollbar>
+
+
+
+
+        <small class="text-dark-gray px-3 py-1">
+          <strong>Thursday, 28 Feb</strong>
+        </small>
+
+        <div class="list-group list-group-flush">
+
+          <div class="list-group-item bg-light">
+            <div class="row">
+              <div class="col-auto d-flex flex-column">
+                <small>12:30 PM</small>
+                <small class="text-dark-gray">2 hrs</small>
+              </div>
+              <div class="col">
+                <div class="d-flex flex-column flex">
+                  <a href="#" class="text-body"><strong class="text-15pt">Marketing Team
+                      Meeting</strong></a>
+
+                  <small class="text-muted d-flex align-items-center"><i
+                      class="material-icons icon-16pt mr-1">location_on</i> 16845 Hicks
+                    Road</small>
+
+
+                </div>
+                <div class="avatar-group mt-2">
+
+                  <div class="avatar avatar-xs">
+                    <img src="assets/images/256_joao-silas-636453-unsplash.jpg" alt="Avatar"
+                      class="avatar-img rounded-circle">
+                  </div>
+
+                  <div class="avatar avatar-xs">
+                    <img src="assets/images/256_jeremy-banks-798787-unsplash.jpg" alt="Avatar"
+                      class="avatar-img rounded-circle">
+                  </div>
+
+                  <div class="avatar avatar-xs">
+                    <img src="assets/images/256_daniel-gaffey-1060698-unsplash.jpg" alt="Avatar"
+                      class="avatar-img rounded-circle">
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <small class="text-dark-gray px-3 py-1">
+          <strong>Wednesday, 27 Feb</strong>
+        </small>
+
+        <div class="list-group list-group-flush">
+
+          <div class="list-group-item bg-light">
+            <div class="row">
+              <div class="col-auto d-flex flex-column">
+                <small>07:48 PM</small>
+                <small class="text-dark-gray">30 min</small>
+              </div>
+              <div class="col">
+                <div class="d-flex flex-column flex">
+                  <a href="#" class="text-body"><strong class="text-15pt">Call Alex</strong></a>
+
+
+                  <small class="text-muted d-flex align-items-center"><i class="material-icons icon-16pt mr-1">phone</i>
+                    202-555-0131</small>
+
+                </div>
+
+
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <small class="text-dark-gray px-3 py-1">
+          <strong>Tuesday, 26 Feb</strong>
+        </small>
+
+        <div class="list-group list-group-flush">
+
+          <div class="list-group-item bg-light">
+            <div class="row">
+              <div class="col-auto d-flex flex-column">
+                <small>03:13 PM</small>
+                <small class="text-dark-gray">2 hrs</small>
+              </div>
+              <div class="col">
+                <div class="d-flex flex-column flex">
+                  <a href="#" class="text-body"><strong class="text-15pt">Design Team
+                      Meeting</strong></a>
+
+                  <small class="text-muted d-flex align-items-center"><i
+                      class="material-icons icon-16pt mr-1">location_on</i> 16845 Hicks
+                    Road</small>
+
+
+                </div>
+                <div class="avatar-group mt-2">
+
+                  <div class="avatar avatar-xs">
+                    <img src="assets/images/256_rsz_1andy-lee-642320-unsplash.jpg" alt="Avatar"
+                      class="avatar-img rounded-circle">
+                  </div>
+
+                  <div class="avatar avatar-xs">
+                    <img src="assets/images/256_michael-dam-258165-unsplash.jpg" alt="Avatar"
+                      class="avatar-img rounded-circle">
+                  </div>
+
+                  <div class="avatar avatar-xs">
+                    <img src="assets/images/256_luke-porter-261779-unsplash.jpg" alt="Avatar"
+                      class="avatar-img rounded-circle">
+                  </div>
+
+                  <div class="avatar avatar-xs">
+                    <img src="assets/images/stories/256_rsz_clem-onojeghuo-193397-unsplash.jpg" alt="Avatar"
+                      class="avatar-img rounded-circle">
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <small class="text-dark-gray px-3 py-1">
+          <strong>Monday, 25 Feb</strong>
+        </small>
+
+        <div class="list-group list-group-flush">
+
+          <div class="list-group-item bg-light">
+            <div class="row">
+              <div class="col-auto d-flex flex-column">
+                <small>12:30 PM</small>
+                <small class="text-dark-gray">2 hrs</small>
+              </div>
+              <div class="col d-flex">
+                <div class="d-flex flex-column flex">
+                  <a href="#" class="text-body"><strong class="text-15pt">Call Wendy</strong></a>
+
+
+                  <small class="text-muted d-flex align-items-center"><i class="material-icons icon-16pt mr-1">phone</i>
+                    202-555-0131</small>
+
+                </div>
+
+
+                <div class="avatar avatar-xs">
+                  <img src="assets/images/256_michael-dam-258165-unsplash.jpg" alt="Avatar"
+                    class="avatar-img rounded-circle">
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- App Settings FAB -->
+  <div id="app-settings">
+    <app-settings layout-active="default" :layout-location="{
+      'default': 'admin-dashboard.html',
+      'fixed': 'fixed-admin-dashboard.html',
+      'fluid': 'fluid-admin-dashboard.html',
+      'mini': 'mini-admin-dashboard.html'
+    }"></app-settings>
+  </div>
+
+  <!-- jQuery -->
+  <script src="assets/vendor/jquery.min.js"></script>
+
+  <!-- Bootstrap -->
+  <script src="assets/vendor/popper.min.js"></script>
+  <script src="assets/vendor/bootstrap.min.js"></script>
+
+  <!-- Perfect Scrollbar -->
+  <script src="assets/vendor/perfect-scrollbar.min.js"></script>
+
+  <!-- DOM Factory -->
+  <script src="assets/vendor/dom-factory.js"></script>
+
+  <!-- MDK -->
+  <script src="assets/vendor/material-design-kit.js"></script>
+
+  <!-- Range Slider -->
+  <script src="assets/vendor/ion.rangeSlider.min.js"></script>
+  <script src="assets/js/ion-rangeslider.js"></script>
+
+  <!-- App -->
+  <script src="assets/js/toggle-check-all.js"></script>
+  <script src="assets/js/check-selected-row.js"></script>
+  <script src="assets/js/dropdown.js"></script>
+  <script src="assets/js/sidebar-mini.js"></script>
+  <script src="assets/js/app.js"></script>
+
+  <!-- App Settings (safe to remove) -->
+  <script src="assets/js/app-settings.js"></script>
+
+
+  <!-- Flatpickr -->
+  <script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
+  <script src="assets/js/flatpickr.js"></script>
+
+  <!-- Global Settings -->
+  <script src="assets/js/settings.js"></script>
+
+  <!-- Chart.js -->
+  <script src="assets/vendor/Chart.min.js"></script>
+
+  <!-- App Charts JS -->
+  <script src="assets/js/charts.js"></script>
+
+  <!-- Chart Samples -->
+  <script src="assets/js/page.admin-dashboard.js"></script>
+
+  <!-- Vector Maps -->
+  <script src="assets/vendor/jqvmap/jquery.vmap.min.js"></script>
+  <script src="assets/vendor/jqvmap/maps/jquery.vmap.world.js"></script>
+  <script src="assets/js/vector-maps.js"></script>
+
+</body>
+
+
+<!-- Mirrored from educate.frontted.com/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Apr 2022 18:42:17 GMT -->
+
+</html>
