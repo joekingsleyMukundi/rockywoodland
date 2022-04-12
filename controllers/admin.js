@@ -108,7 +108,8 @@ exports.declineJob=async(req,res,next)=>{
 exports.deleteUser = async (req,res,next)=>{
   const id = req.params.id;
   const writer = await User.findById(id);
-  writer.delete()
+  writer.verified = false
+  writer.save()
   .then(results=>{
     console.log('success');
     req.flash('success', 'Successfully rejected the user')
