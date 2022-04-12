@@ -168,12 +168,16 @@ exports.dashboard=async (req,res,next)=>{
   }else{
     jobsno= totalJobs.length;
     pendingjobs = await Job.find({writerid:user._id,status:'pending'});
+    approvedJobs = await Job.find({writerid:user._id,status:'paid'});
+    rejectedjobs = await Job.find({writerid:user._id,status:'rejected'})
   }
   context={
     user:user,
     totaljobs:jobsno,
     pendingjobs:pendingjobs.length,
     jobs:totalJobs,
+    paidjobs:approvedJobs.length,
+    rejectedjobs:rejectedjobs.length,
     errormessage:req.flash('error'),
     successmessage:req.flash('success')
   }
