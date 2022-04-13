@@ -159,7 +159,7 @@ exports.dashboard=async (req,res,next)=>{
   if(user.role=="admin"){
     return res.redirect('/admindashboard');
   }
-  const currentuser = await User.findOne({email:user.email})
+  const currentuser = await User.findOne({email:user.email});
   var jobsno;
   var pendingjobs;
   const totalJobs = await Job.find({writerid:user._id});
@@ -182,20 +182,20 @@ exports.dashboard=async (req,res,next)=>{
     rejectedjobs:rejectedjobs.length,
     errormessage:req.flash('error'),
     successmessage:req.flash('success')
-  }
-  res.render('dashboard',context)
-}
+  };
+  res.render('dashboard',context);
+};
 
 exports.jobs= async(req,res,next)=>{
   const user=req.session.user;
-  const totalJobs = await Job.find({writerid:user.__id})
+  const totalJobs = await Job.find({writerid:user.__id});
   context={
     user:user,
     jobs:totalJobs
-  }
+  };
   if(req.method == 'POST'){
     const title = req.body.title;
-    const platform = req.body.platform
+    const platform = req.body.platform;
     const amount =Number(req.body.amount);
     const job = new Job({jobTitle:title,writerid:user._id,amount:amount,platform:platform,writerUsername:user.username,writeremail:user.email,writerphone:user.phone});
     job.save()
@@ -207,10 +207,33 @@ exports.jobs= async(req,res,next)=>{
       console.log(error);
       req.flash('Error', 'Job upload successful. Please wait for validation');
       return res.redirect('/');
-    })
+    });
   }else{
-    res.redirect('/')
+    res.redirect('/');
   }
   
-}
+};
 
+
+exports.editJob = async(req,res,next)=>{
+  const user =  req.session.user
+  const id = req.params.id;
+  const job = await Job.findById(id);
+  if(req.method == 'POST'){
+    const question  =  req.body.title;
+    const  amount =  req.body.amount;
+    const platform = req.body.platform;
+    job.jobTitle = question
+    job.amount = amount
+    job.platform = platform
+    job.save()
+    console.log(job)
+    return res.redirect('/');
+  }else{
+    return res.render('editjob',{
+      user:user,
+      job:job,
+      errormessage:req.flash('error'),
+      successmessage:req.flash('success')});
+  }
+};

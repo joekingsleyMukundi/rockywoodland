@@ -423,6 +423,13 @@
                                                                 <td>
                                                                     <%= job.amount %>
                                                                 </td>
+                                                                <% if (job.status=='pending' ) { %>
+                                                                    <td><a href="/edit/<%= job._id %> "
+                                                                            class="btn btn-primary">
+                                                                            Edit job
+                                                                        </a>
+                                                                    </td>
+                                                                    <% } %>
                                                             </tr>
                                                             <%})%>
                                                                 <%}%>

@@ -8,6 +8,8 @@ exports.adminDashboard = async (req,res,next)=>{
   }
   var totaljobs;
   var pendingjobs;
+  var pendingpayment = 0;
+  var completedpayments = 0;
   const unverifiedWriters = await User.find({role:"writer",verified:false});
   const jobs = await Job.find();
   const writers = await User.find({role:"writer"});
@@ -16,16 +18,27 @@ exports.adminDashboard = async (req,res,next)=>{
     pendingjobs = 0;
   }else{
     totaljobs = jobs.length;
-    pendingjobsarray = await Job.find({status:'pending'});
+    pendingjobsarray = await Job.find({status:'pending payment'});
+    completedarry = await Job.find({status:'paid'});
+    completedarry.forEach(completedJob => {
+      completedpayments += completedJob.amount;
+    });
+    pendingjobsarray.forEach(pendingjob => {
+      pendingpayment += pendingjob.amount;
+    });
     pendingjobs=pendingjobsarray.length;
   }
   context = {
     user:user,
+    writers:writers,
     totalWriters:writers.length,
     unverified:unverifiedWriters.length,
     pendingjobs:pendingjobs,
     totaljobs:totaljobs,
-    jobs:jobs, errormessage:req.flash('error'),
+    jobs:jobs,
+    completedpayments:completedpayments,
+    pendingpayment:pendingpayment,
+    errormessage:req.flash('error'),
     successmessage:req.flash('success')
   };
   res.render('admindashboard',context);
@@ -39,7 +52,8 @@ exports.writters = async (req,res,next)=>{
   const writers = await User.find({role:"writer"});
   context = {
     user:user,
-    writters:writers, errormessage:req.flash('error'),
+    writters:writers,
+    errormessage:req.flash('error'),
     successmessage:req.flash('success')
   };
   res.render('adminusers',context);
@@ -50,7 +64,31 @@ exports.activateAccount=async(req,res,next)=>{
   const writer = await User.findById(id);
   writer.verified = true;
   await writer.save();
-  res.redirect('/writers');
+  res.redirect('/admindashboard');
+};
+
+exports.jobs =async(req,res,next)=>{
+  const user=req.session.user;
+  if(user.role != "admin"){
+    return res.redirect('/');
+  }
+  const id = req.params.id;
+  const jobs  = await Job.find({writerid:id});
+  const writer =  await User.findById(id)
+  const completedjobs = await Job.find({writerid:id,status:'paid'});
+  const pendingjobs = await Job.find({writerid:id,status:'pending payment'});
+  const rejectedJobs =  await Job.find({writerid:id,status:'rejected'});
+  context = {
+    user:user,
+    jobs:jobs,
+    writer:writer,
+    completedjobs,completedjobs,
+    pendingjobs:pendingjobs,
+    rejectedJobs:rejectedJobs,
+    errormessage:req.flash('error'),
+    successmessage:req.flash('success')
+  };
+  res.render('adminwriters.ejs', context);
 };
 exports.pay=async(req,res,next)=>{
   const id = req.params.id;
@@ -68,13 +106,13 @@ exports.pay=async(req,res,next)=>{
     user.totalRevenue = newrev;
     user.save();
     req.flash('success', 'Successfully approved and confirmed payment for the job');
-    return res.redirect('/admindashboard');
+    return res.redirect(`/jobs/${id}`);
   })
   .catch(error=>{
     console.log(error);
-    req.flash('error', 'an erroroccored')
-    return res.redirect('/admindashboard')
-  })
+    req.flash('error', 'an erroroccored');
+    return res.redirect('/admindashboard');
+  });
 };
 exports.approveJob=async(req,res,next)=>{
   const id = req.params.id;
@@ -89,13 +127,13 @@ exports.approveJob=async(req,res,next)=>{
     user.pendingRevenue = newprev;
     user.save();
     req.flash('success', 'Successfully approved and confirmed payment for the job');
-    return res.redirect('/admindashboard');
+    return res.redirect(`/jobs/${id}`);
   })
   .catch(error=>{
     console.log(error);
-    req.flash('error', 'an erroroccored')
-    return res.redirect('/admindashboard')
-  })
+    req.flash('error', 'an erroroccored');
+    return res.redirect('/admindashboard');
+  });
 };
 exports.declineJob=async(req,res,next)=>{
   const id = req.params.id;
@@ -103,22 +141,22 @@ exports.declineJob=async(req,res,next)=>{
   job.status = 'rejected';
   await job.save();
   req.flash('success', 'Successfully rejected the job');
-  res.redirect('/admindashboard');
+  res.redirect(`/jobs/${id}`);
 };
 exports.deleteUser = async (req,res,next)=>{
   const id = req.params.id;
   const writer = await User.findById(id);
-  writer.verified = false
+  writer.verified = false;
   writer.save()
   .then(results=>{
     console.log('success');
-    req.flash('success', 'Successfully rejected the user')
+    req.flash('success', 'Successfully rejected the user');
  
     return res.redirect('/adminDashboard');
   })
   .catch(error=>{
     console.log(error);
-    req.flash('error', 'an erroroccored')
+    req.flash('error', 'an erroroccored');
     return res.redirect('/admindashboard');
   });
 };

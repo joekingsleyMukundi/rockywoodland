@@ -7,6 +7,7 @@ const RequireAuth = require('../middlewares/authrequired');
 
 router.get('/admindashboard',RequireAuth,controllers.adminDashboard);
 router.get('/writers',RequireAuth,controllers.writters);
+router.get('/jobs/:id',RequireAuth,controllers.jobs)
 router.get('/writer/:id',RequireAuth,controllers.activateAccount);
 router.get('/approvejob/:id',RequireAuth,controllers.approveJob);
 router.get('/payjob/:id',RequireAuth,controllers.pay);

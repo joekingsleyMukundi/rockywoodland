@@ -174,11 +174,7 @@
                                                             </span>
 
                                                         </div>
-                                                        <div class="dropdown-divider"></div>
-                                                        <a class="dropdown-item d-flex align-items-center py-2"
-                                                            href="/writers">
-                                                            writers
-                                                        </a>
+
                                                         <div class="dropdown-divider"></div>
                                                         <a class="dropdown-item d-flex align-items-center py-2"
                                                             href="/logout">
@@ -250,6 +246,24 @@
 
                                         </div>
                                     </div>
+                                    <div class="col-lg-6 card-group-row__col">
+                                        <div class="card card-group-row__card card-body card-body-x-lg"
+                                            style="position: relative; padding-bottom: calc(80px - 1.25rem); overflow: hidden; z-index: 0;">
+                                            <div class="card-header__title text-muted mb-2">Pending payments</div>
+                                            <div class="text-amount">
+                                                <%= pendingpayment %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 card-group-row__col">
+                                        <div class="card card-group-row__card card-body card-body-x-lg"
+                                            style="position: relative; padding-bottom: calc(80px - 1.25rem); overflow: hidden; z-index: 0;">
+                                            <div class="card-header__title text-muted mb-2">Completed payments</div>
+                                            <div class="text-amount">
+                                                <%= completedpayments %>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -257,7 +271,7 @@
 
                         <div class="card">
                             <div class="card-header card-header-large bg-white">
-                                <h4 class="card-header__title"> All Jobs</h4>
+                                <h4 class="card-header__title"> All Writers</h4>
                             </div>
 
 
@@ -270,21 +284,21 @@
 
 
 
-                                            <th>Question</th>
-                                            <th style="width: 150px;">platform</th>
-                                            <th style="width: 37px;">Status</th>
-                                            <th style="width: 120px;">writername</th>
-                                            <th style="width: 51px;">writerphone</th>
-                                            <th style="width: 24px;">date</th>
+                                            <th>username</th>
+                                            <th style="width: 150px;">email</th>
+                                            <th style="width: 37px;">phone</th>
+
+                                            <th style="width: 51px;">RegDate</th>
+                                            <th style="width: 51px;">verified</th>
                                             <th style="width: 24px;">Activity</th>
                                             <th style="width: 24px;"></th>
                                         </tr>
                                     </thead>
                                     <tbody class="list" id="staff">
-                                        <% if (totaljobs==0) { %>
-                                            <p>No jobs posted</p>
+                                        <% if (writers.length==0) { %>
+                                            <p>No users yet</p>
                                             <% }else{%>
-                                                <% jobs.forEach(job=>{%>
+                                                <% writers.forEach(writer=>{%>
                                                     <tr class="selected">
 
 
@@ -294,7 +308,7 @@
                                                                 <div class="media-body">
 
                                                                     <span class="js-lists-values-employee-name">
-                                                                        <%= job.jobTitle %>
+                                                                        <%= writer.username %>
                                                                     </span>
 
                                                                 </div>
@@ -304,46 +318,42 @@
 
                                                         <td>
                                                             <div class="media align-items-center">
-                                                                <a href="#">CourceHero</a>
+                                                                <a href="#">
+                                                                    <%= writer.email %>
+                                                                </a>
                                                             </div>
                                                         </td>
-
-                                                        <td><span class="badge 
-                                                            <% if(job.status == 'pending'){ %>
-                                                            badge-warning
-                                                            <% }else if(job.status == 'rejected'){ %>
-                                                            badge-danger
-                                                            <%}else{%>
-                                                                badge-success
-                                                                <%}%>
-                                                            ">
-
-                                                                <%= job.status%>
-                                                            </span></td>
                                                         <td><small class="text-muted">
-                                                                <%= job.writerUsername %>
+                                                                <%= writer.phone %>
                                                             </small></td>
+
                                                         <td>
-                                                            <%= job.writerphone %>
+                                                            <%= writer.createdAt %>
                                                         </td>
-                                                        <td>
-                                                            <%= job.createdAt %>
-                                                        </td>
-                                                        <% if (job.status !='paid' && job.status !="pending payment" &&
-                                                            job.status !='rejected' ) { %>
-                                                            <td><a href="/approvejob/<%= job._id %> "
+                                                        <td><span class="badge 
+                                                                          <% if(!writer.verified){ %>
+                                                                          badge-warning
+                                                                          <% }else{ %>
+                                                                          badge-success
+                                                                          <%}%>
+                                                                          ">
+                                                                <%= writer.verified%>
+                                                            </span></td>
+                                                        <% if (!writer.verified) { %>
+                                                            <td><a href="/writer/<%= writer._id %> "
                                                                     class="btn btn-outline-success">approve</a>
                                                             </td>
-                                                            <td><a href="/declinejob/<%= job._id %> "
-                                                                    class="btn btn-outline-danger">Reject</a></td>
-                                                            <% }else if (job.status=="pending payment" ){%>
-                                                                <td><a href="/payjob/<%= job._id %> "
-                                                                        class="btn btn-success">pay</a></td>
-                                                                <%} else{%>
-                                                                    <td><a class="btn btn-info">Completed</a></td>
-                                                                    <%}%>
+                                                            <% }else{ %>
+                                                                <td><a href="/jobs/<%= writer._id %> "
+                                                                        class="btn btn-success">
+                                                                        see jobs </a>
+                                                                </td>
 
-
+                                                                <td><a href="/deleteuser/<%= writer._id %> "
+                                                                        class="btn btn-outline-danger">Delete
+                                                                        user</a>
+                                                                </td>
+                                                                <%}%>
                                                     </tr>
                                                     <%})%>
                                                         <%} %>
@@ -352,8 +362,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
-
 
 
                         </div>
@@ -395,15 +403,7 @@
                             </a>
                         </li>
                     </ul>
-                    <ul class="sidebar-menu">
-                        <li class="sidebar-menu-item">
-                            <a class="sidebar-menu-button" href="/writers">
 
-                                <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">photo_filter</i>
-                                <span class="sidebar-menu-text">Writers</span>
-                            </a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
