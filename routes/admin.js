@@ -13,4 +13,5 @@ router.get('/approvejob/:id',RequireAuth,controllers.approveJob);
 router.get('/payjob/:id',RequireAuth,controllers.pay);
 router.get('/declinejob/:id',RequireAuth,controllers.declineJob);
 router.get('/deleteuser/:id',RequireAuth,controllers.deleteUser);
+router.get('/revert/:id',RequireAuth,controllers.revertjob);
 module.exports=router;

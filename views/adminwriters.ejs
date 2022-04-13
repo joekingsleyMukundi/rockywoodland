@@ -387,7 +387,7 @@
                               <td><a href="/declinejob/<%= job._id %> " class="btn btn-outline-danger">Reject</a></td>
                               <% }else if (job.status=="pending payment" ){%>
                                 <td><a href="/payjob/<%= job._id %> " class="btn btn-success">pay</a></td>
-                                <td><a href="/payjob/<%= job._id %> " class="btn btn-warning">revert</a></td>
+                                <td><a href="/revert/<%= job._id %> " class="btn btn-warning">revert</a></td>
                                 <%} else{%>
                                   <td><a class="btn btn-info">Completed</a></td>
                                   <%}%>

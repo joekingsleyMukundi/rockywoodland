@@ -106,7 +106,7 @@ exports.pay=async(req,res,next)=>{
     user.totalRevenue = newrev;
     user.save();
     req.flash('success', 'Successfully approved and confirmed payment for the job');
-    return res.redirect(`/jobs/${id}`);
+    return res.redirect(`/jobs/${job.writerid}`);
   })
   .catch(error=>{
     console.log(error);
@@ -127,7 +127,7 @@ exports.approveJob=async(req,res,next)=>{
     user.pendingRevenue = newprev;
     user.save();
     req.flash('success', 'Successfully approved and confirmed payment for the job');
-    return res.redirect(`/jobs/${id}`);
+    return res.redirect(`/jobs/${job.writerid}`);
   })
   .catch(error=>{
     console.log(error);
@@ -135,13 +135,36 @@ exports.approveJob=async(req,res,next)=>{
     return res.redirect('/admindashboard');
   });
 };
+
+exports.revertjob=async(req,res,next)=>{
+  const id = req.params.id;
+  const job = await Job.findById(id);
+  job.verified = false;
+  job.status = "pending";
+  job.save();
+  User.findOne({email:job.writeremail})
+  .then(user=>{
+    const prev = user.pendingRevenue;
+    const newprev = prev-job.amount;
+    user.pendingRevenue = newprev;
+    user.save();
+    req.flash('success', 'Successfully approved and confirmed payment for the job');
+    return res.redirect(`/jobs/${job.writerid}`);
+  })
+  .catch(error=>{
+    console.log(error);
+    req.flash('error', 'an erroroccored');
+    return res.redirect('/admindashboard');
+  });
+};
+
 exports.declineJob=async(req,res,next)=>{
   const id = req.params.id;
   const job = await Job.findById(id);
   job.status = 'rejected';
   await job.save();
   req.flash('success', 'Successfully rejected the job');
-  res.redirect(`/jobs/${id}`);
+  res.redirect(`/jobs/${job.writerid}`);
 };
 exports.deleteUser = async (req,res,next)=>{
   const id = req.params.id;
