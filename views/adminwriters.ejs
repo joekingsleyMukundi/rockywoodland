@@ -325,6 +325,7 @@
                       <th style="width: 120px;">writername</th>
                       <th style="width: 51px;">writerphone</th>
                       <th style="width: 24px;">date</th>
+                      <th style="width: 24px;">amount</th>
                       <th style="width: 24px;">Activity</th>
                       <th style="width: 24px;"></th>
                     </tr>
@@ -379,6 +380,9 @@
                             </td>
                             <td>
                               <%= job.createdAt %>
+                            </td>
+                            <td>
+                              <%= job.amount %>
                             </td>
                             <% if (job.status !='paid' && job.status !="pending payment" && job.status !='rejected' ) {
                               %>
