@@ -94,65 +94,73 @@ exports.logout=(req,res,next)=>{
 });
 };
 
-// exports.forgotpass = async (req,res,next)=>{
-//   if(req.session.user){
-//     res.redirect('/dashboard')
-//   }
-//   if(req.method == 'POST'){
-//     const user = await User.findOne({email:req.body.email});
-//     if(!user){
-//       req.flash('error', 'User does not exist');
-//       return res.redirect('/register');
-//     }
+exports.forgotpass = async (req,res,next)=>{
+  if(req.session.user){
+    res.redirect('/')
+  }
+  if(req.method == 'POST'){
+    const user = await User.findOne({email:req.body.email});
+    if(!user){
+      req.flash('error', 'User does not exist');
+      return res.redirect('/register');
+    }
 
-//     const resetToken = user.getResetPasswordToken();
-//     console.log(resetToken);
-//     const reseturl = `${req.protocol}://${req.get('host')}/resetpassword/${resetToken}`;
-//     const message  = `You are receiving this email because you (or someone else) has requested a reset of password. Please click this link ${reseturl}`;
-//     const subj = "Password Renewal";
-//     try {
-//       await sendMail(user.firstname,user.email,subj,message);
-//       res.redirect('/forgotpassword')
-//     } catch (error) {
-//       console.log(error);
-//       user.resetPasswordToken = undefined;
-//       user.resetPassworExpire = undefined;
-//       await user.save({validateBeforeSave: false});
-//       res.redirect('/forgotpassword')
-//     }
-//     await user.save(
-//       {
-//         validateBeforeSave: false
-//       }
-//     );
-//   }
-//   res.render('forgotpassword')
-// };
+    const resetToken = user.getResetPasswordToken();
+    console.log(resetToken);
+    const reseturl = `${req.protocol}://${req.get('host')}/resetpassword/${resetToken}`;
+    const message  = `You are receiving this email because you (or someone else) has requested a reset of password. Please click this link ${reseturl}`;
+    const subj = "Password Renewal";
+    try {
+      await sendMail(user.username,user.email,subj,message);
+      req.flash('success' , 'Instructiions were sent to your email');
+      res.redirect('/forgotpassword');
+    } catch (error) {
+      console.log(error);
+      user.resetPasswordToken = undefined;
+      user.resetPassworExpire = undefined;
+      await user.save({validateBeforeSave: false});
+      req.flash('error' , 'something went wrong');
+      res.redirect('/forgotpassword');
+    }
+    await user.save(
+      {
+        validateBeforeSave: false
+      }
+    );
+  }else{
+    
+    res.render('forgotpass',{successmessage:req.flash('success'),errormessage:req.flash('error')});
+  }
+  
+};
 
-// exports.resetPassword = async (req,res,next)=>{
-//   // get hashed token
-//   const resetpassToken  = crypto.createHash('sha256').update(req.params.resettoken).digest('hex');
-//   const user = await User.findOne({
-//     resetPasswordToken : resetpassToken,
-//     resetPassworExpire :{$gt : Date.now()}
-//   });
+exports.resetPassword = async (req,res,next)=>{
+  // get hashed token
+  const resetpassToken  = crypto.createHash('sha256').update(req.params.resettoken).digest('hex');
+  console.log(resetpassToken);
+  const user = await User.findOne({
+    resetPasswordToken : resetpassToken,
+  });
 
-//   if(!user){
-//     req.flash('error', 'User does not exist');
-//     res.redirect('/login')
-//   }
-//   res.render('')
-//   if(req.method == 'POST'){
-//     // set new pass
-//     user.password = req.body.password;
-//     user.resetPasswordToken = undefined;
-//     user.resetPassworExpire= undefined;
-//     await user.save();
-//     req.session.user = user;
-//     req.session.is_loggedin = true
-//     res.redirect('/dashboard')
-//   }
-// };
+console.log(user);
+  if(!user){
+    req.flash('error', 'User does not exist');
+    return res.redirect('/login')
+  }
+  if(req.method == 'POST'){
+    // set new pass
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPassworExpire= undefined;
+    await user.save();
+    req.session.user = user;
+    req.session.is_loggedin = true
+    req.flash('success', 'Password reset');
+    res.redirect('/')
+  }else{
+    res.render('restpass',{successmessage:req.flash('success'),errormessage:req.flash('error')})
+  }
+};
 
 exports.dashboard=async (req,res,next)=>{
   const user=req.session.user;
@@ -189,6 +197,8 @@ exports.dashboard=async (req,res,next)=>{
 exports.jobs= async(req,res,next)=>{
   const user=req.session.user;
   const totalJobs = await Job.find({writerid:user.__id});
+  const admin =await User.findOne({role:'admin', email:'waiganjoian51@gmail.com'});
+  console.log(admin);
   context={
     user:user,
     jobs:totalJobs
@@ -201,6 +211,9 @@ exports.jobs= async(req,res,next)=>{
     job.save()
     .then(results=>{
       req.flash('success', 'Job upload successful. Please wait for validation');
+      const message  = `Admin please 'check' the portal  a job has been posted by ${user.username} 'with' job title ${title}`;
+      const subj = "New Job Notification";
+      sendMail(admin.username,admin.email,subj,message);
       return res.redirect('/');
     })
     .catch(error=>{

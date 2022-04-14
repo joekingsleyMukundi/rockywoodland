@@ -1,6 +1,7 @@
 // jshint esversion:9
 const Job = require("../models/jobs");
 const User = require("../models/writter");
+const { sendMail } = require('../utils/sendemail.js');
 exports.adminDashboard = async (req,res,next)=>{
   const user=req.session.user;
   if(user.role != "admin"){
@@ -64,6 +65,9 @@ exports.activateAccount=async(req,res,next)=>{
   const writer = await User.findById(id);
   writer.verified = true;
   await writer.save();
+  const message  = `Dear partner am happy to inform you that you have been approved  you can now access the dashboard`;
+  const subj = "Job Rejected";
+  sendMail(writer.username,writer.email,subj,message);
   res.redirect('/admindashboard');
 };
 
@@ -106,6 +110,9 @@ exports.pay=async(req,res,next)=>{
     user.totalRevenue = newrev;
     user.save();
     req.flash('success', 'Successfully approved and confirmed payment for the job');
+    const message  = `Dear partner you have successfully recived payment for job title ${job.jobTitle}`;
+    const subj = "Payment Confirmation";
+    sendMail(user.username,user.email,subj,message);
     return res.redirect(`/jobs/${job.writerid}`);
   })
   .catch(error=>{
@@ -126,6 +133,9 @@ exports.approveJob=async(req,res,next)=>{
     const newprev = prev+job.amount;
     user.pendingRevenue = newprev;
     user.save();
+    const message  = `Dear partner your job 'with' title ${job.jobTitle} has successfully been approver and payment will be sent soon`;
+    const subj = "Job Approval";
+    sendMail(user.username,user.email,subj,message);
     req.flash('success', 'Successfully approved and confirmed payment for the job');
     return res.redirect(`/jobs/${job.writerid}`);
   })
@@ -149,6 +159,9 @@ exports.revertjob=async(req,res,next)=>{
     user.pendingRevenue = newprev;
     user.save();
     req.flash('success', 'Successfully approved and confirmed payment for the job');
+    const message  = `Dear partner your job 'with' title ${job.jobTitle} has  been reverted`;
+    const subj = "Job Reverted";
+    sendMail(user.username,user.email,subj,message);
     return res.redirect(`/jobs/${job.writerid}`);
   })
   .catch(error=>{
@@ -164,6 +177,9 @@ exports.declineJob=async(req,res,next)=>{
   job.status = 'rejected';
   await job.save();
   req.flash('success', 'Successfully rejected the job');
+  const message  = `Dear partner your job 'with' title ${job.jobTitle} has regretfully been rejected`;
+  const subj = "Job Rejected";
+  sendMail(job.writerUsername,job.writeremail,subj,message);
   res.redirect(`/jobs/${job.writerid}`);
 };
 exports.deleteUser = async (req,res,next)=>{
@@ -174,7 +190,9 @@ exports.deleteUser = async (req,res,next)=>{
   .then(results=>{
     console.log('success');
     req.flash('success', 'Successfully rejected the user');
- 
+    const message  = `Dear partner am sorry to inform you you have been revocked please contact the admin`;
+    const subj = "Job Rejected";
+    sendMail(writer.username,writer.email,subj,message);
     return res.redirect('/adminDashboard');
   })
   .catch(error=>{
