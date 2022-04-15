@@ -66,7 +66,7 @@ exports.activateAccount=async(req,res,next)=>{
   writer.verified = true;
   await writer.save();
   const message  = `Dear partner am happy to inform you that you have been approved  you can now access the dashboard`;
-  const subj = "Job Rejected";
+  const subj = "User approved";
   sendMail(writer.username,writer.email,subj,message);
   res.redirect('/admindashboard');
 };
