@@ -207,7 +207,7 @@ exports.jobs= async(req,res,next)=>{
     const title = req.body.title;
     const platform = req.body.platform;
     const amount =Number(req.body.amount);
-    if (!title||!platform|| !amount) {
+    if (title == ""||platform==""|| amount==undefined) {
       req.flash('error','empty values cannot be submited');
       res.redirect('/');
     }
