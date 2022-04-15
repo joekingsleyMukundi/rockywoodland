@@ -16,6 +16,10 @@ exports.registeruser = async(req,res,next)=>{
   }
   if(req.method == 'POST'){
     const{username,email,phone,password,repassword} = req.body;
+    if (email == "" || username == "" || phone == ""||password==""||repassword=="") {
+      req.flash('error','empty values cannot be submited');
+      return res.redirect('/register');
+    }
     if(password != repassword){
       req.flash('error', 'Password should match');
       return res.redirect('/register');
@@ -55,6 +59,10 @@ exports.loginuser = async(req,res,next)=>{
     return res.redirect('/')
   }
   if(req.method == 'POST'){
+    if (req.body.email == "" || req.body.password == "") {
+      req.flash('error','empty values cannot be submited');
+      return res.redirect('/login');
+    }
     const{email, password} = req.body;
     const existinguser = await User.findOne({email});
     if(!existinguser){
@@ -99,6 +107,10 @@ exports.forgotpass = async (req,res,next)=>{
     res.redirect('/')
   }
   if(req.method == 'POST'){
+    if (req.body.email == "") {
+      req.flash('error','empty values cannot be submited');
+      return res.redirect('/forgotpassword');
+    }
     const user = await User.findOne({email:req.body.email});
     if(!user){
       req.flash('error', 'User does not exist');
@@ -148,6 +160,10 @@ console.log(user);
     return res.redirect('/login')
   }
   if(req.method == 'POST'){
+    if (req.body.password == "") {
+      req.flash('error','empty values cannot be submited');
+      return res.redirect('/login');
+    }
     // set new pass
     user.password = req.body.password;
     user.resetPasswordToken = undefined;
@@ -180,7 +196,6 @@ exports.dashboard=async (req,res,next)=>{
     approvedJobs = await Job.find({writerid:user._id,status:'paid'});
     rejectedjobs = await Job.find({writerid:user._id,status:'rejected'});
   }
-  console.log(user);
   context={
     user:currentuser,
     totaljobs:jobsno,
@@ -198,7 +213,6 @@ exports.jobs= async(req,res,next)=>{
   const user=req.session.user;
   const totalJobs = await Job.find({writerid:user.__id});
   const admin =await User.findOne({role:'admin', email:'waiganjoian51@gmail.com'});
-  console.log(admin);
   context={
     user:user,
     jobs:totalJobs
@@ -209,7 +223,7 @@ exports.jobs= async(req,res,next)=>{
     const amount =Number(req.body.amount);
     if (title == ""||platform==""|| amount==undefined) {
       req.flash('error','empty values cannot be submited');
-      res.redirect('/');
+      return res.redirect('/');
     }
     const job = new Job({jobTitle:title,writerid:user._id,amount:amount,platform:platform,writerUsername:user.username,writeremail:user.email,writerphone:user.phone});
     job.save()
@@ -238,13 +252,16 @@ exports.editJob = async(req,res,next)=>{
   const job = await Job.findById(id);
   if(req.method == 'POST'){
     const question  =  req.body.title;
-    const  amount =  req.body.amount;
+    const  amount = Number(req.body.amount);
     const platform = req.body.platform;
+    if (question == "" || amount == undefined|| platform == "") {
+      req.flash('error','empty values cannot be submited');
+      return res.redirect('/');
+    }
     job.jobTitle = question
     job.amount = amount
     job.platform = platform
     job.save()
-    console.log(job)
     return res.redirect('/');
   }else{
     return res.render('editjob',{
