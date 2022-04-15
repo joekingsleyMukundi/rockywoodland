@@ -207,6 +207,10 @@ exports.jobs= async(req,res,next)=>{
     const title = req.body.title;
     const platform = req.body.platform;
     const amount =Number(req.body.amount);
+    if (!title||!platform|| !amount) {
+      req.flash('error','empty values cannot be submited');
+      res.redirect('/');
+    }
     const job = new Job({jobTitle:title,writerid:user._id,amount:amount,platform:platform,writerUsername:user.username,writeremail:user.email,writerphone:user.phone});
     job.save()
     .then(results=>{
