@@ -171,6 +171,19 @@ exports.revertjob=async(req,res,next)=>{
   });
 };
 
+
+exports.revertdecline=async(req,res,next)=>{
+  const id = req.params.id;
+  const job = await Job.findById(id);
+  job.status = 'pending';
+  await job.save();
+  req.flash('success', 'Successfully reverted the job');
+  const message  = `Dear partner your job 'with' title ${job.jobTitle} has  been reverted to pending`;
+  const subj = "Job Rejected";
+  sendMail(job.writerUsername,job.writeremail,subj,message);
+  res.redirect(`/jobs/${job.writerid}`);
+};
+
 exports.declineJob=async(req,res,next)=>{
   const id = req.params.id;
   const job = await Job.findById(id);
