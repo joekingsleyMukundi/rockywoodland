@@ -9,8 +9,8 @@ const nodemailer = require("nodemailer");
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "support@goldlinebreeze.com", // generated ethereal user
-      pass: "MG~v57=lBK2?", // generated ethereal password
+      user: "info@platinumendwriters.com", // generated ethereal user
+      pass: "_Oe2@RDnK8V{", // generated ethereal password
     },
     tls:{
       rejectUnauthorized:false
