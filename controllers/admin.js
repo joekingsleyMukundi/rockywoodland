@@ -227,10 +227,10 @@ exports.editmultiple = async(req,res,next)=>{
     switch (updateMethod) {
       case 'pay':
         for (let i = 0; i < ids.length; i++) {
+          await new Promise(resolve=> setTimeout(resolve,2000));
           const id = ids[i];
           console.log(id);
           const job = await Job.findById(id);
-          console.log(job);
           job.verified = true;
           job.status = "paid";
           job.save();
@@ -246,14 +246,14 @@ exports.editmultiple = async(req,res,next)=>{
               console.log("success");
             }
           });
-          setTimeout(()=>{
-            console.log('hello');
-          },2000);
+          // setTimeout(()=>{
+          //   console.log('hello');
+          // },2000);
         }
         break;
       case 'approve':
         for (let i = 0; i < ids.length; i++) {
-          setTimeout(async()=>{
+          await new Promise(resolve=> setTimeout(resolve,2000));
           const id = ids[i];
           const job = await Job.findById(id);
           job.verified = true;
@@ -268,6 +268,7 @@ exports.editmultiple = async(req,res,next)=>{
               console.log('sucess');
             }
           });
+          setTimeout(()=>{
             console.log('hello');
           },2000);
         }
