@@ -226,7 +226,7 @@ exports.editmultiple = async(req,res,next)=>{
     }
     switch (updateMethod) {
       case 'pay':
-        for (let i = 0; i <= ids.length; i++) {
+        for (let i = 0; i < ids.length; i++) {
           const id = ids[i];
           console.log(id);
           const job = await Job.findById(id);
@@ -252,7 +252,7 @@ exports.editmultiple = async(req,res,next)=>{
         }
         break;
       case 'approve':
-        for (let i = 0; i <= ids.length; i++) {
+        for (let i = 0; i < ids.length; i++) {
           const id = ids[i];
           const job = await Job.findById(id);
           job.verified = true;
