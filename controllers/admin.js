@@ -214,3 +214,79 @@ exports.deleteUser = async (req,res,next)=>{
     return res.redirect('/admindashboard');
   });
 };
+
+exports.editmultiple = async(req,res,next)=>{
+  if(req.method == "POST"){
+    const updateMethod = req.body.method;
+    const ids = req.body.checkbox;
+    console.log(ids);
+    if (ids == undefined){
+      req.flash('error', 'no job selected');
+      return res.redirect('/adminDashboard');
+    }
+    switch (updateMethod) {
+      case 'pay':
+        ids.forEach(async (id) => {
+          const job = await Job.findById(id);
+          job.verified = true;
+          job.status = "paid";
+          job.save();
+          User.findOne({email:job.writeremail})
+          .then(user=>{
+            const prev = user.pendingRevenue;
+            const newprev = prev-job.amount;
+            user.pendingRevenue = newprev;
+            const rev = user.totalRevenue;
+            const newrev = rev+job.amount;
+            user.totalRevenue = newrev;
+            user.save();
+            const message  = `Dear partner you have successfully recived payment for job title ${job.jobTitle}`;
+            const subj = "Payment Confirmation";
+            sendMail(user.username,user.email,subj,message);
+          })
+          .catch(error=>{
+            console.log(error);
+            req.flash('error', 'an erroroccored');
+            return res.redirect('/admindashboard');
+          });
+        });
+        break;
+      case 'approve':
+        ids.forEach(async (id) => {
+          const job = await Job.findById(id);
+          job.verified = true;
+          job.status = "pending payment";
+          job.save();
+          User.findOne({email:job.writeremail})
+          .then(user=>{
+            const prev = user.pendingRevenue;
+            const newprev = prev+job.amount;
+            user.pendingRevenue = newprev;
+            user.save();
+            const message  = `Dear partner your job 'with' title ${job.jobTitle} has successfully been approver and payment will be sent soon`;
+            const subj = "Job Approval";
+            sendMail(user.username,user.email,subj,message);
+          })
+          .catch(error=>{
+            console.log(error);
+            req.flash('error', 'an erroroccored');
+            return res.redirect('/admindashboard');
+          });
+        });
+        break;
+      case 'reject':
+        ids.forEach(async(id) => {
+          const job = await Job.findById(id);
+          job.status = 'rejected';
+          await job.save();
+          req.flash('success', 'Successfully rejected the job');
+          const message  = `Dear partner your job 'with' title ${job.jobTitle} has regretfully been rejected`;
+          const subj = "Job Rejected";
+          sendMail(job.writerUsername,job.writeremail,subj,message);
+        });
+        break;
+    }
+    req.flash('success', 'Successfully updated the job');
+    return res.redirect('/adminDashboard');
+  }
+};

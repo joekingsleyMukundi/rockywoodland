@@ -303,157 +303,179 @@
                 </div>
               </div>
             </div>
+            <form action="/editmultiple" method="post">
+              <div class="card">
+                <div class="card-header card-header-large bg-white">
+                  <h4 class="card-header__title"> All Jobs</h4>
+                  <button type="submit" class="btn btn-success">Update</button>
+                </div>
+                <label for="cars">Choose a Method:</label>
 
-            <div class="card">
-              <div class="card-header card-header-large bg-white">
-                <h4 class="card-header__title"> All Jobs</h4>
-              </div>
+                <select name="method">
+                  <option value="pay">pay (only after approval)</option>
+                  <option value="approve">approve</option>
+                  <option value="reject">reject</option>
+                </select>
 
-
-              <div class="table-responsive border-bottom" data-toggle="lists"
-                data-lists-values='["js-lists-values-employee-name"]'>
-
-                <table class="table mb-0 thead-border-top-0">
-                  <thead>
-                    <tr>
-
-
-
-                      <th>Question</th>
-                      <th style="width: 150px;">platform</th>
-                      <th style="width: 37px;">Status</th>
-                      <th style="width: 120px;">writername</th>
-                      <th style="width: 51px;">writerphone</th>
-                      <th style="width: 24px;">date</th>
-                      <th style="width: 24px;">amount</th>
-                      <th style="width: 24px;">Activity</th>
-                      <th style="width: 24px;"></th>
-                    </tr>
-                  </thead>
-                  <tbody class="list" id="staff">
-                    <% if (jobs.length==0) { %>
-                      <p>No jobs posted</p>
-                      <% }else{%>
-                        <% jobs.forEach(job=>{%>
-                          <tr class="selected">
+                <div class="table-responsive border-bottom" data-toggle="lists"
+                  data-lists-values='["js-lists-values-employee-name"]'>
 
 
-                            <td>
 
-                              <div class="media align-items-center">
-                                <div class="media-body">
+                  <table class="table mb-0 thead-border-top-0">
+                    <thead>
+                      <tr>
 
-                                  <span class="js-lists-values-employee-name">
-                                    <%= job.jobTitle %>
-                                  </span>
 
-                                </div>
-                              </div>
+                        <th>Select</th>
+                        <th>Question</th>
+                        <th style="width: 150px;">platform</th>
+                        <th style="width: 37px;">Status</th>
+                        <th style="width: 120px;">writername</th>
+                        <th style="width: 51px;">writerphone</th>
+                        <th style="width: 24px;">date</th>
+                        <th style="width: 24px;">amount</th>
+                        <th style="width: 24px;">Activity</th>
+                        <th style="width: 24px;"></th>
+                      </tr>
+                    </thead>
+                    <tbody class="list" id="staff">
+                      <% if (jobs.length==0) { %>
+                        <p>No jobs posted</p>
+                        <% }else{%>
+                          <% jobs.forEach(job=>{%>
+                            <tr class="selected">
 
-                            </td>
+                              <td>
 
-                            <td>
-                              <div class="media align-items-center">
-                                <a href="#">
-                                  <%= job.platform %>
-                                </a>
-                              </div>
-                            </td>
+                                <div class="media align-items-center">
+                                  <div class="media-body">
 
-                            <td><span class="badge 
-                                              <% if(job.status == 'pending'){ %>
-                                              badge-warning
-                                              <% }else if(job.status == 'rejected'){ %>
-                                              badge-danger
-                                              <%}else{%>
-                                                  badge-success
-                                                  <%}%>
-                                              ">
-
-                                <%= job.status%>
-                              </span></td>
-                            <td><small class="text-muted">
-                                <%= job.writerUsername %>
-                              </small></td>
-                            <td>
-                              <%= job.writerphone %>
-                            </td>
-                            <td>
-                              <%= job.createdAt %>
-                            </td>
-                            <td>
-                              <%= job.amount %>
-                            </td>
-                            <% if (job.status !='paid' && job.status !="pending payment" && job.status !='rejected' ) {
-                              %>
-                              <td><a href="/approvejob/<%= job._id %> " class="btn btn-outline-success">approve</a>
+                                    <span class="js-lists-values-employee-name">
+                                      <input type="checkbox" name="checkbox" value="<%= job.id %>" />&nbsp;
                               </td>
-                              <td><a href="/declinejob/<%= job._id %> " class="btn btn-outline-danger">Reject</a></td>
-                              <% }else if (job.status=="pending payment" ){%>
-                                <td><a href="/payjob/<%= job._id %> " class="btn btn-success">pay</a></td>
-                                <td><a href="/revert/<%= job._id %> " class="btn btn-warning">revert</a></td>
-                                <%} else if(job.status=='rejected' ){%>
-                                  <td><a href="/revertdel/<%= job._id %> " class="btn btn-warning">revert</a></td>
-                                  <%}else{%>
-                                    <td><a class="btn btn-info">Completed</a></td>
-                                    <%}%>
+                              </span>
 
-
-                          </tr>
-                          <%})%>
-                            <%} %>
-
-
-                  </tbody>
-                </table>
+                </div>
               </div>
 
+              </td>
+              <td>
+
+                <div class="media align-items-center">
+                  <div class="media-body">
+
+                    <span class="js-lists-values-employee-name">
+                      <%= job.jobTitle %>
+                    </span>
+
+                  </div>
+                </div>
+
+              </td>
+
+              <td>
+                <div class="media align-items-center">
+                  <a href="#">
+                    <%= job.platform %>
+                  </a>
+                </div>
+              </td>
+
+              <td><span class="badge 
+                                                <% if(job.status == 'pending'){ %>
+                                                badge-warning
+                                                <% }else if(job.status == 'rejected'){ %>
+                                                badge-danger
+                                                <%}else{%>
+                                                    badge-success
+                                                    <%}%>
+                                                ">
+
+                  <%= job.status%>
+                </span></td>
+              <td><small class="text-muted">
+                  <%= job.writerUsername %>
+                </small></td>
+              <td>
+                <%= job.writerphone %>
+              </td>
+              <td>
+                <%= job.createdAt %>
+              </td>
+              <td>
+                <%= job.amount %>
+              </td>
+              <% if (job.status !='paid' && job.status !="pending payment" && job.status !='rejected' ) { %>
+                <td><a href="/approvejob/<%= job._id %> " class="btn btn-outline-success">approve</a>
+                </td>
+                <td><a href="/declinejob/<%= job._id %> " class="btn btn-outline-danger">Reject</a></td>
+                <% }else if (job.status=="pending payment" ){%>
+                  <td><a href="/payjob/<%= job._id %> " class="btn btn-success">pay</a></td>
+                  <td><a href="/revert/<%= job._id %> " class="btn btn-warning">revert</a></td>
+                  <%} else if(job.status=='rejected' ){%>
+                    <td><a href="/revertdel/<%= job._id %> " class="btn btn-warning">revert</a></td>
+                    <%}else{%>
+                      <td><a class="btn btn-info">Completed</a></td>
+                      <%}%>
 
 
+                        </tr>
+                        <%})%>
+                          <%} %>
 
-            </div>
 
-
+                            </tbody>
+                            </table>
           </div>
 
 
+
+
         </div>
-        <!-- // END header-layout__content -->
+        </form>
+
 
       </div>
-      <!-- // END header-layout -->
+
 
     </div>
-    <!-- // END drawer-layout__content -->
+    <!-- // END header-layout__content -->
 
-    <div class="mdk-drawer  js-mdk-drawer" id="default-drawer" data-align="start">
-      <div class="mdk-drawer__content">
-        <div class="sidebar sidebar-dark sidebar-left bg-dark-gray" data-perfect-scrollbar>
+  </div>
+  <!-- // END header-layout -->
 
-          <div class="d-flex align-items-center sidebar-p-a sidebar-account flex-shrink-0">
-            <a href="index.html" class="flex d-flex align-items-center text-underline-0">
-              <span class="mr-3">
-                <!-- LOGO -->
-                PLATNUMENDWRITERS
-              </span>
+  </div>
+  <!-- // END drawer-layout__content -->
 
+  <div class="mdk-drawer  js-mdk-drawer" id="default-drawer" data-align="start">
+    <div class="mdk-drawer__content">
+      <div class="sidebar sidebar-dark sidebar-left bg-dark-gray" data-perfect-scrollbar>
+
+        <div class="d-flex align-items-center sidebar-p-a sidebar-account flex-shrink-0">
+          <a href="index.html" class="flex d-flex align-items-center text-underline-0">
+            <span class="mr-3">
+              <!-- LOGO -->
+              PLATNUMENDWRITERS
+            </span>
+
+          </a>
+        </div>
+
+
+        <ul class="sidebar-menu">
+          <li class="sidebar-menu-item">
+            <a class="sidebar-menu-button" href="/">
+
+              <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">photo_filter</i>
+              <span class="sidebar-menu-text">Overview</span>
             </a>
-          </div>
+          </li>
+        </ul>
 
-
-          <ul class="sidebar-menu">
-            <li class="sidebar-menu-item">
-              <a class="sidebar-menu-button" href="/">
-
-                <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">photo_filter</i>
-                <span class="sidebar-menu-text">Overview</span>
-              </a>
-            </li>
-          </ul>
-
-        </div>
       </div>
     </div>
+  </div>
   </div>
   <!-- // END drawer-layout -->
 
