@@ -253,6 +253,7 @@ exports.editmultiple = async(req,res,next)=>{
         break;
       case 'approve':
         for (let i = 0; i < ids.length; i++) {
+          setTimeout(async()=>{
           const id = ids[i];
           const job = await Job.findById(id);
           job.verified = true;
@@ -267,7 +268,6 @@ exports.editmultiple = async(req,res,next)=>{
               console.log('sucess');
             }
           });
-          setTimeout(()=>{
             console.log('hello');
           },2000);
         }
