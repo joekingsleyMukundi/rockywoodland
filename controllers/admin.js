@@ -228,7 +228,9 @@ exports.editmultiple = async(req,res,next)=>{
       case 'pay':
         for (let i = 0; i <= ids.length; i++) {
           const id = ids[i];
+          console.log(id);
           const job = await Job.findById(id);
+          console.log(job);
           job.verified = true;
           job.status = "paid";
           job.save();
