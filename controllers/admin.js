@@ -300,9 +300,9 @@ exports.editmultiple = async(req,res,next)=>{
         });
         break;
     }
-    const message  = `Dear partner your job  successfully been updated`;
-    const subj = "Job Update";
-    sendMail(user.username,user.email,subj,message);
+    // const message  = `Dear partner your job  successfully been updated`;
+    // const subj = "Job Update";
+    // sendMail(user.username,user.email,subj,message);
     req.flash('success', 'Successfully updated the job');
     return res.redirect('/adminDashboard');
   }
